@@ -1,4 +1,24 @@
-export default function TaskForm() {
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+// import { dateFormatter } from "../utils/functions";
+
+export default function UpdateForm() {
+  const params = useParams();
+  const id = params.id;
+
+  const [task, setTask] = useState([]);
+
+  useEffect(() => {
+    async function fetchTask() {
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_GET_TASK_URL}/${id}`
+      );
+      const data = await response.json();
+      setTask(data[0]);
+    }
+    fetchTask();
+  }, [id]);
+
   async function handleSubmit(formData) {
     "use server";
     const formValues = {
@@ -8,8 +28,8 @@ export default function TaskForm() {
       task_due_date: formData.get("task_due_date"),
     };
 
-    await fetch(`${import.meta.env.VITE_SERVER_POST_URL}`, {
-      method: "POST",
+    await fetch(`${import.meta.env.VITE_SERVER_UPDATE_URL}/${id}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -21,7 +41,7 @@ export default function TaskForm() {
     <div>
       <form action={handleSubmit} className="flex flex-col items-center">
         <fieldset className="fieldset w-xs bg-base-200 border border-base-300 p-4 rounded-box">
-          <legend className="fieldset-legend">Add a new task</legend>
+          <legend className="fieldset-legend">Edit this task</legend>
 
           <label className="fieldset-label">Task title: </label>
           <input
@@ -29,6 +49,7 @@ export default function TaskForm() {
             className="input"
             placeholder="Write the name of the task"
             name="task_title"
+            defaultValue={task.task_title}
             required
           />
 
@@ -38,10 +59,11 @@ export default function TaskForm() {
             className="input"
             placeholder="Optional"
             name="task_description"
+            defaultValue={task?.task_description}
           />
           <label className="fieldset-label">Task status: </label>
           <select
-            defaultValue="Pick a status"
+            value={task.task_status}
             className="select"
             name="task_status"
             required
@@ -58,6 +80,7 @@ export default function TaskForm() {
             className="input"
             placeholder="Pick a due date"
             name="task_due_date"
+            value={task.task_due_date}
           />
         </fieldset>
         <button

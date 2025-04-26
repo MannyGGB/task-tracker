@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { dateFormatter } from "../utils/functions";
-// import { capitalise } from "../utils/functions";
+import DeleteButton from "./DeleteButton";
+import UpdateButton from "./UpdateButton";
 
 export default function TaskCard() {
   const [allTasks, setAllTasks] = useState([]);
@@ -12,7 +13,7 @@ export default function TaskCard() {
       setAllTasks(data);
     }
     fetchTasks();
-  }, []);
+  }, [allTasks]);
 
   return (
     <section className="flex flex-col items-center">
@@ -23,10 +24,13 @@ export default function TaskCard() {
         >
           <article className="card-body card-border">
             <h2 className="card-title">{task.task_title}</h2>
-            <p>{task.task_description}</p>
+            <p>{task?.task_description}</p>
             <p>{task.task_status}</p>
             <p>{dateFormatter(task.task_due_date)}</p>
           </article>
+
+          <DeleteButton id={task.id} />
+          <UpdateButton id={task.id} />
         </div>
       ))}
     </section>

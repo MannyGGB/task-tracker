@@ -33,6 +33,24 @@ app.get("/allTasks", async (_, res) => {
   }
 });
 
+app.get("/task/:id", async (req, res) => {
+  try {
+    const params = req.params.id;
+
+    const query = await db.query(`SELECT * FROM tasks WHERE id= $1`, [params]);
+    const task = query.rows;
+    res.json(task);
+  } catch (error) {
+    if (error instanceof TypeError) {
+      console.error("Network error or invalid response:", error.message);
+    } else if (error.message.includes("HTTP error!")) {
+      console.error("API responded with an error:", error.message);
+    } else {
+      console.error("Unexpected error:", error);
+    }
+  }
+});
+
 app.post("/insertTask", async (req, res) => {
   try {
     const body = req.body.formValues;
@@ -61,6 +79,18 @@ app.put("/updateTask/:id", async (req, res) => {
   try {
     const body = req.body.formValues;
     const params = req.params.id;
+
+    const query = await db.query(
+      `UPDATE tasks SET task_title= $!, task_description=$2, task_status= $3, task_due_date= $4 WHERE id = $5`,
+      [
+        body.task_title,
+        body.task_description,
+        body.task_status,
+        body.task_due_date,
+        params,
+      ]
+    );
+    res.json(query.rows);
   } catch (error) {
     if (error instanceof TypeError) {
       console.error("Network error or invalid response:", error.message);
@@ -75,6 +105,11 @@ app.put("/updateTask/:id", async (req, res) => {
 app.delete("/deleteTask/:id", async (req, res) => {
   try {
     const params = req.params.id;
+    const query = await db.query(
+      `DELETE FROM tasks WHERE id = $1 RETURNING *`,
+      [params]
+    );
+    res.json(query.rows);
   } catch (error) {
     if (error instanceof TypeError) {
       console.error("Network error or invalid response:", error.message);
