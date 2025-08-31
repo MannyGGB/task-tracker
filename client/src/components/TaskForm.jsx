@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function TaskForm() {
+  const navigate = useNavigate();
   const [staff, setStaff] = useState([]);
 
   useEffect(() => {
@@ -31,6 +33,7 @@ export default function TaskForm() {
       },
       body: JSON.stringify({ formValues }),
     });
+    navigate("/");
   }
 
   return (
@@ -88,6 +91,7 @@ export default function TaskForm() {
             className="input"
             placeholder="Pick a due date"
             name="task_due_date"
+            required
           />
         </fieldset>
         <button

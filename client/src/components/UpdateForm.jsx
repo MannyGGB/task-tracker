@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import { dateFormatter } from "../utils/functions";
 
 export default function UpdateForm() {
   const { idParams } = useParams();
+  const navigate = useNavigate();
   console.log(idParams);
 
   const [task, setTask] = useState("");
@@ -48,6 +50,7 @@ export default function UpdateForm() {
       },
       body: JSON.stringify({ formValues }),
     });
+    navigate("/");
   }
 
   return (
@@ -108,7 +111,8 @@ export default function UpdateForm() {
             placeholder="Pick a due date"
             name="task_due_date"
             // value={task.task_due_date.split("T")[0]}
-            value={task.task_due_date}
+            // value={task.task_due_date}
+            required
           />
         </fieldset>
         <button
