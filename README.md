@@ -11,3 +11,5 @@
 - Database set up with Supabase
 
 ## References
+
+Task icons created by Freepik - Flaticon

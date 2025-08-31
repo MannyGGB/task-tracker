@@ -53,16 +53,33 @@ app.get("/task/:id", async (req, res) => {
   }
 });
 
+app.get("/staff", async (_, res) => {
+  try {
+    const query = await db.query(`SELECT * FROM staff`);
+    const staff = query.rows;
+    res.json(staff);
+  } catch (error) {
+    if (error instanceof TypeError) {
+      console.error("Network error or invalid response:", error.message);
+    } else if (error.message.includes("HTTP error!")) {
+      console.error("API responded with an error:", error.message);
+    } else {
+      console.error("Unexpected error:", error);
+    }
+  }
+});
+
 app.post("/insertTask", async (req, res) => {
   try {
     const body = req.body.formValues;
     const query = await db.query(
-      `INSERT INTO tasks (task_title, task_description, task_status, task_due_date) VALUES ($1, $2, $3, $4) RETURNING *`,
+      `INSERT INTO tasks (task_title, task_description, task_status, task_due_date, staff_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
       [
         body.task_title,
         body.task_description,
         body.task_status,
         body.task_due_date,
+        body.staff_id,
       ]
     );
     res.json(query.rows);

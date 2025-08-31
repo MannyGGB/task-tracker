@@ -9,7 +9,3 @@ export function dateFormatter(date) {
   const formattedDate = formatter.format(rawDate);
   return formattedDate;
 }
-
-export async function getStaffData() {
-  const response = await fetch(`${import.meta.env.VITE_SERVER_GET_URL}`);
-}

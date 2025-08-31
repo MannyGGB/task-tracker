@@ -1,10 +1,26 @@
+import { useState, useEffect } from "react";
+
 export default function TaskForm() {
+  const [staff, setStaff] = useState([]);
+
+  useEffect(() => {
+    async function fetchStaff() {
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_GET_STAFF_URL}`
+      );
+      const data = await response.json();
+      setStaff(data);
+    }
+    fetchStaff();
+  }, []);
+
   async function handleSubmit(formData) {
     "use server";
     const formValues = {
       task_title: formData.get("task_title"),
       task_description: formData.get("task_description"),
       task_status: formData.get("task_status"),
+      staff_id: formData.get("staff_id"),
       task_due_date: formData.get("task_due_date"),
     };
 
@@ -56,10 +72,15 @@ export default function TaskForm() {
           <select
             defaultValue="Pick an organiser"
             className="select"
-            name="staff_name"
+            name="staff_id"
             required
           >
-            {}
+            <option disabled={true}>Pick an organiser</option>
+            {staff.map((member) => (
+              <option key={member.id} value={member.id}>
+                {member.staff_name}
+              </option>
+            ))}
           </select>
           <label className="fieldset-label">Task due date: </label>
           <input
