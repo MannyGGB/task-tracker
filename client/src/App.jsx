@@ -10,7 +10,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<TaskCard />} />
         <Route path="newTask" element={<TaskForm />} />
-        <Route path="updateTask/:id" element={<UpdateForm />} />
+        <Route path="updateTask/:idParams" element={<UpdateForm />} />
       </Routes>
       <Dock />
     </>

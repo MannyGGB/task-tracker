@@ -3,20 +3,34 @@ import { useParams } from "react-router-dom";
 // import { dateFormatter } from "../utils/functions";
 
 export default function UpdateForm() {
-  const { id } = useParams();
+  const { idParams } = useParams();
+  console.log(idParams);
 
   const [task, setTask] = useState("");
 
   useEffect(() => {
     async function fetchTask() {
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER_GET_TASK_URL}/${id}`
+        `${import.meta.env.VITE_SERVER_GET_TASK_URL}/${idParams}`
       );
       const data = await response.json();
       setTask(data[0]);
     }
     fetchTask();
-  }, [id]);
+  }, [idParams]);
+
+  const [staff, setStaff] = useState([]);
+
+  useEffect(() => {
+    async function fetchStaff() {
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_GET_STAFF_URL}`
+      );
+      const data = await response.json();
+      setStaff(data);
+    }
+    fetchStaff();
+  }, []);
 
   async function handleSubmit(formData) {
     "use server";
@@ -27,7 +41,7 @@ export default function UpdateForm() {
       task_due_date: formData.get("task_due_date"),
     };
 
-    await fetch(`${import.meta.env.VITE_SERVER_UPDATE_URL}/${id}`, {
+    await fetch(`${import.meta.env.VITE_SERVER_UPDATE_URL}/${idParams}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -72,6 +86,20 @@ export default function UpdateForm() {
             <option>Doing</option>
             <option>Block</option>
             <option>Done</option>
+          </select>
+          <label className="fieldset-label">Organiser: </label>
+          <select
+            value={task.staff_id}
+            className="select"
+            name="staff_id"
+            required
+          >
+            <option disabled={true}>Pick an organiser</option>
+            {staff.map((member) => (
+              <option key={member.id} value={member.id}>
+                {member.staff_name}
+              </option>
+            ))}
           </select>
           <label className="fieldset-label">Task due date: </label>
           <input

@@ -20,7 +20,7 @@ app.get("/", (_, res) => {
 app.get("/allTasks", async (_, res) => {
   try {
     const query =
-      await db.query(`SELECT tasks.task_title, tasks.task_description, tasks.task_status, tasks.task_due_date,  staff.staff_name FROM tasks 
+      await db.query(`SELECT tasks.id, tasks.task_title, tasks.task_description, tasks.task_status, tasks.task_due_date,  staff.staff_name FROM tasks 
       JOIN staff ON staff.id = tasks.staff_id;`);
     const tasks = query.rows;
     res.json(tasks);

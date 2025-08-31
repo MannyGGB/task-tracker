@@ -11,9 +11,10 @@ export default function TaskCard() {
       const response = await fetch(`${import.meta.env.VITE_SERVER_GET_URL}`);
       const data = await response.json();
       setAllTasks(data);
+      console.log(data);
     }
     fetchTasks();
-  }, [allTasks]);
+  }, []);
 
   return (
     <section className="flex flex-col items-center">
