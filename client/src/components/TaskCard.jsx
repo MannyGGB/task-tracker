@@ -26,6 +26,7 @@ export default function TaskCard() {
             <h2 className="card-title">{task.task_title}</h2>
             <p>{task?.task_description}</p>
             <p>{task.task_status}</p>
+            <p>{task.staff_name}</p>
             <p>{dateFormatter(task.task_due_date)}</p>
           </article>
 

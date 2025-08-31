@@ -52,6 +52,19 @@ export default function TaskForm() {
             <option>Block</option>
             <option>Done</option>
           </select>
+          <label className="fieldset-label">Organiser: </label>
+          <select
+            defaultValue="Pick an organiser"
+            className="select"
+            name="staff_name"
+            required
+          >
+            <option disabled={true}>Pick a status</option>
+            <option>To do</option>
+            <option>Doing</option>
+            <option>Block</option>
+            <option>Done</option>
+          </select>
           <label className="fieldset-label">Task due date: </label>
           <input
             type="date"
