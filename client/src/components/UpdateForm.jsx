@@ -3,10 +3,9 @@ import { useParams } from "react-router-dom";
 // import { dateFormatter } from "../utils/functions";
 
 export default function UpdateForm() {
-  const params = useParams();
-  const id = params.id;
+  const { id } = useParams();
 
-  const [task, setTask] = useState([]);
+  const [task, setTask] = useState("");
 
   useEffect(() => {
     async function fetchTask() {
@@ -80,6 +79,7 @@ export default function UpdateForm() {
             className="input"
             placeholder="Pick a due date"
             name="task_due_date"
+            // value={task.task_due_date.split("T")[0]}
             value={task.task_due_date}
           />
         </fieldset>

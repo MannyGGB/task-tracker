@@ -19,7 +19,9 @@ app.get("/", (_, res) => {
 
 app.get("/allTasks", async (_, res) => {
   try {
-    const query = await db.query(`SELECT * FROM tasks`);
+    const query =
+      await db.query(`SELECT tasks.task_title, tasks.task_description, tasks.task_status, tasks.task_due_date,  staff.staff_name FROM tasks 
+      JOIN staff ON staff.id = tasks.staff_id;`);
     const tasks = query.rows;
     res.json(tasks);
   } catch (error) {
@@ -81,7 +83,7 @@ app.put("/updateTask/:id", async (req, res) => {
     const params = req.params.id;
 
     const query = await db.query(
-      `UPDATE tasks SET task_title= $!, task_description=$2, task_status= $3, task_due_date= $4 WHERE id = $5`,
+      `UPDATE tasks SET task_title= $1, task_description=$2, task_status= $3, task_due_date= $4 WHERE id = $5`,
       [
         body.task_title,
         body.task_description,
