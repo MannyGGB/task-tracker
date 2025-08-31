@@ -9,3 +9,8 @@ export function dateFormatter(date) {
   const formattedDate = formatter.format(rawDate);
   return formattedDate;
 }
+
+export function wordFormatter(word) {
+  const capitalised = word.charAt(0).toUpperCase() + word.slice(1);
+  return capitalised;
+}

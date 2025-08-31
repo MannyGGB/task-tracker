@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { dateFormatter } from "../utils/functions";
+import { dateFormatter, wordFormatter } from "../utils/functions";
 import DeleteButton from "./DeleteButton";
 import UpdateButton from "./UpdateButton";
 
@@ -26,7 +26,15 @@ export default function TaskCard() {
           <article className="card-body card-border">
             <h2 className="card-title">{task.task_title}</h2>
             <p>{task?.task_description}</p>
-            <p>{task.task_status}</p>
+
+            {task.task_status == "done" ? (
+              <p className="text-emerald-600">
+                {wordFormatter(task.task_status)}
+              </p>
+            ) : (
+              <p>{wordFormatter(task.task_status)}</p>
+            )}
+
             <p>{task.staff_name}</p>
             <p>{dateFormatter(task.task_due_date)}</p>
           </article>
